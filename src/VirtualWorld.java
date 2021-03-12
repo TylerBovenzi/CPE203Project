@@ -81,6 +81,9 @@ public final class VirtualWorld extends PApplet
     {
         Point pressed = mouseToPoint(mouseX, mouseY);
         System.out.println(pressed);
+        UFO ufo = Factory.createUFO("ufo", pressed, 10,10,imageStore.getImageList("ufo"));
+        world.tryAddEntity(ufo);
+        ufo.scheduleActions(scheduler, world, imageStore);
         redraw();
 
     }

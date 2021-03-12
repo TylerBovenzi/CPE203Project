@@ -30,6 +30,10 @@ public class Factory {
         return new OreBlob(id, position, images,actionPeriod, animationPeriod);
     }
 
+    public static UFO createUFO( String id,Point position,int actionPeriod,int animationPeriod,List<PImage> images) {
+        return new UFO(id, position, images,actionPeriod, animationPeriod);
+    }
+
     public static Quake createQuake(Point position, List<PImage> images) {
         return new Quake(position, images);
     }

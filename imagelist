@@ -11,6 +11,15 @@ blob images/blob9.bmp 255 255 255 0
 blob images/blob10.bmp 255 255 255 0
 blob images/blob11.bmp 255 255 255 0
 blob images/blob12.bmp 255 255 255 0
+ufo images/ufo1.bmp 255 255 255 0
+ufo images/ufo2.bmp 255 255 255 0
+ufo images/ufo3.bmp 255 255 255 0
+ufo images/ufo4.bmp 255 255 255 0
+ufo images/ufo5.bmp 255 255 255 0
+ufo images/ufo6.bmp 255 255 255 0
+ufo images/ufo7.bmp 255 255 255 0
+ufo images/ufo8.bmp 255 255 255 0
+ufo images/ufo9.bmp 255 255 255 0
 miner images/miner1.bmp 252 252 252 0
 miner images/miner2.bmp 252 252 252 0
 miner images/miner3.bmp 252 252 252 0
