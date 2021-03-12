@@ -1,0 +1,24 @@
+Changes from Project 1 to 2
+
+Made nextPositionOreBlob non static
+
+Moved getCurrentImage to entity and background
+
+__________________________________________________________
+Methods Left in Functions:
+
+getCurrentImage: used by several classes with ambiguous parameter.
+
+processImageLine: parameter dont match other classes, used in ImageStore but better left static.
+
+getImages: parameter dont match other classes, used by processImageLine but better left static.
+
+setAlpha: color modification used by other static method, purely utility.
+
+nearestEntity: utility method, could be part of Point or World Model but not necessary
+
+clamp: purely static mathematical utility
+
+processLine: could be put in world and imageStore, used predominantly for statically parsing.
+
+ALL PARSE/CREATE: instructed to leave in functions by instructor.

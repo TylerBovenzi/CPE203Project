@@ -1,0 +1,33 @@
+blacksmith images/blacksmith.bmp 255 255 255 0
+blob images/alien1.bmp 255 255 255 0
+blob images/alien2.bmp 255 255 255 0
+blob images/alien3.bmp 255 255 255 0
+blob images/alien4.bmp 255 255 255 0
+blob images/alien5.bmp 255 255 255 0
+blob images/alien6.bmp 255 255 255 0
+blob images/alien7.bmp 255 255 255 0
+blob images/alien8.bmp 255 255 255 0
+blob images/alien9.bmp 255 255 255 0
+blob images/alien10.bmp 255 255 255 0
+miner images/ufo1.bmp 255 255 255 0
+miner images/ufo2.bmp 255 255 255 0
+miner images/ufo3.bmp 255 255 255 0
+miner images/ufo4.bmp 255 255 255 0
+miner images/ufo5.bmp 255 255 255 0
+miner images/ufo6.bmp 255 255 255 0
+miner images/ufo7.bmp 255 255 255 0
+miner images/ufo8.bmp 255 255 255 0
+miner images/ufo9.bmp 255 255 255 0
+quake images/quake1.bmp 255 255 255 0
+quake images/quake2.bmp 255 255 255 0
+quake images/quake3.bmp 255 255 255 0
+quake images/quake4.bmp 255 255 255 0
+quake images/quake5.bmp 255 255 255 0
+quake images/quake6.bmp 255 255 255 0
+ore images/ore.bmp 201 26 26 0
+obstacle images/obstacle.bmp
+grass images/grass.bmp
+rocks images/rock.bmp
+dirt images/dirt.bmp
+vein images/vein.bmp
+background_default images/none.bmp
