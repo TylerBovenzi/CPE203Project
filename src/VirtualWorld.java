@@ -77,6 +77,19 @@ public final class VirtualWorld extends PApplet
         view.drawViewport();
     }
 
+    public void mousePressed()
+    {
+        Point pressed = mouseToPoint(mouseX, mouseY);
+        System.out.println(pressed);
+        redraw();
+
+    }
+
+    private Point mouseToPoint(int x, int y)
+    {
+        return new Point(mouseX/TILE_WIDTH, mouseY/TILE_HEIGHT);
+    }
+
     public void keyPressed() {
         if (key == CODED) {
             int dx = 0;
