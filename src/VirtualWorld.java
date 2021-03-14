@@ -80,11 +80,32 @@ public final class VirtualWorld extends PApplet
     public void mousePressed()
     {
         Point pressed = mouseToPoint(mouseX, mouseY);
+        scorchGround(pressed);
         System.out.println(pressed);
+        world.removeEntityAt(pressed);
         UFO ufo = Factory.createUFO("ufo", pressed, 10,10,imageStore.getImageList("ufo"));
-        world.tryAddEntity(ufo);
+        world.addEntity(ufo);
         ufo.scheduleActions(scheduler, world, imageStore);
         redraw();
+    }
+
+    public void scorchGround(Point loc){
+        final int range = 20;
+        for(int i =-range/2; i<1+range/2; i++){
+            for(int j =-range/2; j<1+range/2; j++){
+                Point newPos = new Point(loc.x+i,loc.y+j);
+                if(world.withinBounds(newPos)) {
+                    System.out.println(1-(Math.pow((0.0 + i * i) + (0.0 + j * j),.5)/range));
+                    if (1-(Math.pow((0.0 + i * i) + (0.0 + j * j),.5)/range)  > 0.6+(Math.random()/4)){
+                        Fire fire =  new Fire(newPos,imageStore.getImageList("fire"));
+                        if(Math.random() < .1){
+                        world.removeEntityAt(newPos);
+                        world.addEntity(fire);
+                        fire.scheduleActions(scheduler, world, imageStore);}
+                        world.setBackgroundCell(newPos, new Background("scorched", imageStore.getImageList("scorched")));}
+                }
+            }
+        }
 
     }
 

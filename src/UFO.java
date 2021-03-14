@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public class UFO extends AnimatedEntity {
 
-    private Point randomTarget;
+    private Point randomTarget = new Point(1,1);
     private boolean hasSmith;
-
+    private boolean searching;
     public UFO(String id,
                    Point position,
                    List<PImage> images,
@@ -22,7 +22,7 @@ public class UFO extends AnimatedEntity {
         Optional<Entity> ufoTarget =world.findNearest(this.getPosition(),Blacksmith.class);
         long nextPeriod = this.getActionPeriod();
 
-        if (ufoTarget.isPresent()) {
+        if (ufoTarget.isPresent()&&!searching) {
             Point tgtPos = ufoTarget.get().getPosition();
 
             if (this.moveToUFO(world, ufoTarget.get(), scheduler)) {
@@ -31,6 +31,27 @@ public class UFO extends AnimatedEntity {
                 world.addEntity(quake);
                 nextPeriod += this.getActionPeriod();
                 quake.scheduleActions(scheduler, world, imageStore);
+            }
+        }
+        else{
+            if(world.isOccupied(randomTarget)){
+                randomTarget = new Point((int)(VirtualWorld.WORLD_COLS*Math.random())-2,(int)(VirtualWorld.WORLD_ROWS*Math.random())-1);
+            }
+            if (Functions.neighbors(this.getPosition(),this.randomTarget)) {
+
+                if(hasSmith) {
+                    world.tryAddEntity(Factory.createBlacksmith("smith", randomTarget, imageStore.getImageList("blacksmith")));
+                    hasSmith = false;
+                }else{
+                    searching = false;
+                }
+                randomTarget = new Point((int)(VirtualWorld.WORLD_COLS*Math.random())-2,(int)(VirtualWorld.WORLD_ROWS*Math.random())-1);
+                if(world.isOccupied(randomTarget)){
+                    randomTarget = new Point((int)(VirtualWorld.WORLD_COLS*Math.random())-2,(int)(VirtualWorld.WORLD_ROWS*Math.random())-1);
+                }
+            }else {
+                world.moveEntity(this, this.nextPositionUFO(world, randomTarget));
+
             }
         }
 
@@ -42,11 +63,12 @@ public class UFO extends AnimatedEntity {
             Entity target,
             EventScheduler scheduler) {
 
-        if(!hasSmith){
+
         if (this.getPosition().adjacent(target.getPosition())) {
             world.removeEntity(target);
             scheduler.unscheduleAllEvents(target);
             hasSmith = true;
+            searching = true;
             randomTarget = new Point((int)(VirtualWorld.WORLD_COLS*Math.random())-2,(int)(VirtualWorld.WORLD_ROWS*Math.random())-1);
             return true;
         } else {
@@ -62,14 +84,14 @@ public class UFO extends AnimatedEntity {
             }
             return false;
         }
-        }
+        /*
         else{
             Point nextPos = this.nextPositionUFO(world,randomTarget);
             if (!this.getPosition().equals(nextPos)) {
                 world.moveEntity(this,nextPos);
             }
-        }
-        return false;
+        }*/
+        //return false;
     }
 
     protected Point nextPositionUFO( WorldModel world, Point destPos)

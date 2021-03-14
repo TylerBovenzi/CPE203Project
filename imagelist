@@ -16,6 +16,11 @@ ufo images/ufo2.bmp 255 255 255 0
 ufo images/ufo3.bmp 255 255 255 0
 ufo images/ufo4.bmp 255 255 255 0
 ufo images/ufo5.bmp 255 255 255 0
+fire images/fire1.bmp 255 255 255 0
+fire images/fire2.bmp 255 255 255 0
+fire images/fire3.bmp 255 255 255 0
+fire images/fire4.bmp 255 255 255 0
+fire images/fire5.bmp 255 255 255 0
 ufo images/ufo6.bmp 255 255 255 0
 ufo images/ufo7.bmp 255 255 255 0
 ufo images/ufo8.bmp 255 255 255 0
@@ -31,6 +36,7 @@ quake images/quake3.bmp 255 255 255 0
 quake images/quake4.bmp 255 255 255 0
 quake images/quake5.bmp 255 255 255 0
 quake images/quake6.bmp 255 255 255 0
+scorched images/scorched.bmp 255 255 255 0
 ore images/ore.bmp 201 26 26 0
 obstacle images/obstacle.bmp
 grass images/grass.bmp
