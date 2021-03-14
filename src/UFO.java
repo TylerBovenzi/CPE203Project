@@ -19,6 +19,9 @@ public class UFO extends AnimatedEntity {
     }
 
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        if(!world.getBackgroundCell(this.getPosition()).id.equals("scorched")){
+            world.setBackgroundCell(this.getPosition(),new Background("scorched", imageStore.getImageList("scorched")));
+        }
         Optional<Entity> ufoTarget =world.findNearest(this.getPosition(),Blacksmith.class);
         long nextPeriod = this.getActionPeriod();
 
