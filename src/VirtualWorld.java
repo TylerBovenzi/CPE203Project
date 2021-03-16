@@ -86,6 +86,9 @@ public final class VirtualWorld extends PApplet
         UFO ufo = Factory.createUFO("ufo", pressed, 10,10,imageStore.getImageList("ufo"));
         world.addEntity(ufo);
         ufo.scheduleActions(scheduler, world, imageStore);
+        Alien alien = Factory.createAlien("alien", new Point(pressed.x+1, pressed.y), 5, 5, imageStore.getImageList("alien"));
+        world.addEntity(alien);
+        alien.scheduleActions(scheduler, world, imageStore);
         redraw();
     }
 

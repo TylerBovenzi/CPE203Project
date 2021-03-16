@@ -69,6 +69,9 @@ public final class Functions
     private static final int KEYED_GREEN_IDX = 3;
     private static final int KEYED_BLUE_IDX = 4;
 
+    private static final String ALIEN_KEY = "alien";
+    private static final int ALIEN_ID = 1;
+
 
     public static void processImageLine(
             Map<String, List<PImage>> images, String line, PApplet screen)
@@ -281,4 +284,6 @@ public final class Functions
     public static String getOreKey() {
         return ORE_KEY;
     }
+    public static String getAlienKey() {return ALIEN_KEY;}
+    public static int getAlienId() {return ALIEN_ID;}
 }
