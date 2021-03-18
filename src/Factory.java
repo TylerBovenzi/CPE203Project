@@ -1,13 +1,30 @@
 import processing.core.PImage;
 
 import java.util.List;
-
+import java.util.Optional;
 
 
 public class Factory {
 
     public static Blacksmith createBlacksmith(String id,Point position, List<PImage> images) {
         return new Blacksmith(id, position, images);
+    }
+
+    public static void createInvasion(Point pressed, WorldModel world, EventScheduler scheduler, ImageStore imageStore){
+        world.removeEntityAt(pressed);
+        UFO ufo = Factory.createUFO("ufo", pressed, 10,10,imageStore.getImageList("ufo"));
+        world.addEntity(ufo);
+        Optional<Entity> minerAlien = world.findNearest(pressed, MinerNotFull.class);
+        if(minerAlien.isPresent()){
+            Point loc = minerAlien.get().getPosition();
+            world.removeEntityAt(loc);
+            Alien alien = Factory.createAlien("alien", loc, 5, 5, imageStore.getImageList("alien"));
+            world.addEntity(alien);
+            alien.scheduleActions(scheduler, world, imageStore);
+        }
+
+        ufo.scheduleActions(scheduler, world, imageStore);
+        Functions.scorchGround(pressed, world, scheduler, imageStore);
     }
 
     public static MinerFull createMinerFull(String id,int resourceLimit,Point position, int actionPeriod, int animationPeriod,List<PImage> images) {

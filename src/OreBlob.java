@@ -29,9 +29,29 @@ public class OreBlob extends AnimatedEntity {
                 nextPeriod += this.getActionPeriod();
                 quake.scheduleActions(scheduler, world, imageStore);
             }
+            scheduleActions(scheduler, world, imageStore);
+        }
+        else{
+            Optional<Entity> blobTarget2 =world.findNearest(this.getPosition(),Fire.class);
+            if(blobTarget2.isPresent()){
+                world.moveEntity(this,nextPositionOreBlob(world,blobTarget2.get().getPosition()));
+                if(this.getPosition().adjacent(blobTarget2.get().getPosition())){
+                    Fire fire = new Fire(this.getPosition(),imageStore.getImageList("fire"));
+                    world.removeEntity(this);
+                    world.addEntity(fire);
+                    fire.scheduleActions(scheduler,world,imageStore);
+                    scheduler.unscheduleAllEvents(this);
+                }else
+                    scheduleActions(scheduler, world, imageStore);
+
+                nextPeriod += this.getActionPeriod();
+            }
+
         }
 
-            scheduleActions(scheduler, world, imageStore);
+
+
+
     }
 
     private boolean moveToOreBlob(

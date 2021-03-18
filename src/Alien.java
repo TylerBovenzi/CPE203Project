@@ -15,13 +15,14 @@ public class Alien extends AnimatedEntity {
 
     @Override
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
-        Optional<Entity> alienTarget =world.findNearest(this.getPosition(),Miner.class);
+        Optional<Entity> alienTarget =world.findNearest(this.getPosition(),MinerNotFull.class);
         long nextPeriod = this.getActionPeriod();
 
         if (alienTarget.isPresent()) {
             Point tgtPos = alienTarget.get().getPosition();
-
             if (this.moveToAlien(world, alienTarget.get(), scheduler)) {
+                world.removeEntity(alienTarget.get());
+                scheduler.unscheduleAllEvents(alienTarget.get());
                 Alien alien = Factory.createAlien(this.getId(), tgtPos, this.getActionPeriod(), this.getAnimationPeriod(), this.getImages());
 
                 world.addEntity(alien);
@@ -31,18 +32,31 @@ public class Alien extends AnimatedEntity {
 
             }
         }
+        else{
+            Optional<Entity> ufoTarget =world.findNearest(this.getPosition(),UFO.class);
+            if (ufoTarget.isPresent()) {
+                Point tgtPos = ufoTarget.get().getPosition();
+                if(this.moveToAlien(world, ufoTarget.get(), scheduler)){
+                    world.removeEntity(this);
+                    scheduler.unscheduleAllEvents(this);
+                    nextPeriod += this.getActionPeriod();
+                }
+            }
+        }
 
         scheduleActions(scheduler, world, imageStore);
     }
 
     private boolean moveToAlien(
+
             WorldModel world,
             Entity target,
             EventScheduler scheduler) {
+
         if (this.getPosition().adjacent(target.getPosition())) {
-            world.removeEntity(target);
-            scheduler.unscheduleAllEvents(target);
+
             return true;
+
         } else {
             Point nextPos = this.nextPositionAlien(world, target.getPosition());
 

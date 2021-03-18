@@ -122,6 +122,23 @@ public final class Functions
         img.updatePixels();
     }
 
+    public static void scorchGround(Point loc, WorldModel world, EventScheduler scheduler, ImageStore imageStore){
+        final int range = 20;
+        for(int i =-range/2; i<1+range/2; i++){
+            for(int j =-range/2; j<1+range/2; j++){
+                Point newPos = new Point(loc.x+i,loc.y+j);
+                if(world.withinBounds(newPos)) {
+                    if (1-(Math.pow((0.0 + i * i) + (0.0 + j * j),.5)/range)  > 0.6+(Math.random()/4)){
+                        Fire fire =  new Fire(newPos,imageStore.getImageList("fire"));
+                        if(Math.random() < .1){
+                            world.tryAddEntity(fire);
+                            fire.scheduleActions(scheduler, world, imageStore);}
+                        world.setBackgroundCell(newPos, new Background("scorched", imageStore.getImageList("scorched")));}
+                }
+            }
+        }
+
+    }
 
     public static String getBlobKey() {
         return BLOB_KEY;

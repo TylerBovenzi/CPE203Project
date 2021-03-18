@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import processing.core.*;
@@ -34,7 +35,7 @@ public final class VirtualWorld extends PApplet
     public static final double FASTEST_SCALE = .1;
 
     public static double timeScale = 1.0;
-
+    private boolean hasClicked = false;
     public ImageStore imageStore;
     public WorldModel world;
     public WorldView view;
@@ -79,36 +80,12 @@ public final class VirtualWorld extends PApplet
 
     public void mousePressed()
     {
-        Point pressed = mouseToPoint(mouseX, mouseY);
-        scorchGround(pressed);
-        System.out.println(pressed);
-        world.removeEntityAt(pressed);
-        UFO ufo = Factory.createUFO("ufo", pressed, 10,10,imageStore.getImageList("ufo"));
-        world.addEntity(ufo);
-        ufo.scheduleActions(scheduler, world, imageStore);
-        Alien alien = Factory.createAlien("alien", new Point(pressed.x+1, pressed.y), 5, 5, imageStore.getImageList("alien"));
-        world.addEntity(alien);
-        alien.scheduleActions(scheduler, world, imageStore);
-        redraw();
-    }
-
-    public void scorchGround(Point loc){
-        final int range = 20;
-        for(int i =-range/2; i<1+range/2; i++){
-            for(int j =-range/2; j<1+range/2; j++){
-                Point newPos = new Point(loc.x+i,loc.y+j);
-                if(world.withinBounds(newPos)) {
-                    if (1-(Math.pow((0.0 + i * i) + (0.0 + j * j),.5)/range)  > 0.6+(Math.random()/4)){
-                        Fire fire =  new Fire(newPos,imageStore.getImageList("fire"));
-                        if(Math.random() < .1){
-                        world.removeEntityAt(newPos);
-                        world.addEntity(fire);
-                        fire.scheduleActions(scheduler, world, imageStore);}
-                        world.setBackgroundCell(newPos, new Background("scorched", imageStore.getImageList("scorched")));}
-                }
-            }
+        if(!hasClicked){
+            Point pressed = mouseToPoint(mouseX, mouseY);
+            Factory.createInvasion(pressed, world, scheduler, imageStore);
+            redraw();
+            //hasClicked= true; //uncomment this line to only allow one invasion
         }
-
     }
 
     private Point mouseToPoint(int x, int y)

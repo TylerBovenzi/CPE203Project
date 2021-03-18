@@ -6,59 +6,65 @@ import java.util.Optional;
 
 
 public class UFO extends AnimatedEntity {
-
-    private Point randomTarget = new Point(1,1);
+    private Point dest;
     private boolean hasSmith;
-    private boolean searching;
+
     public UFO(String id,
                    Point position,
                    List<PImage> images,
                    int actionPeriod,
                    int animationPeriod){
+
         super(id, position, images, actionPeriod, animationPeriod);
+        newDest();
+
     }
 
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         if(!world.getBackgroundCell(this.getPosition()).id.equals("scorched")){
             world.setBackgroundCell(this.getPosition(),new Background("scorched", imageStore.getImageList("scorched")));
         }
-        Optional<Entity> ufoTarget =world.findNearest(this.getPosition(),Blacksmith.class);
+
+        Optional<Entity> ufoTarget =world.findNearest(dest,Blacksmith.class);
         long nextPeriod = this.getActionPeriod();
 
-        if (ufoTarget.isPresent()&&!searching) {
+        if (ufoTarget.isPresent()&&!hasSmith) {
             Point tgtPos = ufoTarget.get().getPosition();
-
             if (this.moveToUFO(world, ufoTarget.get(), scheduler)) {
                 Quake quake = Factory.createQuake(tgtPos, imageStore.getImageList(Functions.QUAKE_KEY));
-
                 world.addEntity(quake);
                 nextPeriod += this.getActionPeriod();
                 quake.scheduleActions(scheduler, world, imageStore);
             }
         }
-        else{
-            if(world.isOccupied(randomTarget)){
-                randomTarget = new Point((int)(VirtualWorld.WORLD_COLS*Math.random())-2,(int)(VirtualWorld.WORLD_ROWS*Math.random())-1);
-            }
-            if (Functions.neighbors(this.getPosition(),this.randomTarget)) {
-
-                if(hasSmith) {
-                    world.tryAddEntity(Factory.createBlacksmith("smith", randomTarget, imageStore.getImageList("blacksmith")));
-                    hasSmith = false;
+        else if(hasSmith){
+            if(this.getPosition().adjacent(dest)){
+                world.removeEntityAt(dest);
+                world.addEntity(Factory.createBlacksmith("id", dest, imageStore.getImageList("blacksmith")));
+                hasSmith =false;
+                newDest();
+            } else{
+                if(nextPositionUFO(world, dest).equals(this.getPosition())){
+                    newDest();
                 }else{
-                    searching = false;
+                    world.moveEntity(this, nextPositionUFO(world,dest));
                 }
-                randomTarget = new Point((int)(VirtualWorld.WORLD_COLS*Math.random())-2,(int)(VirtualWorld.WORLD_ROWS*Math.random())-1);
-                if(world.isOccupied(randomTarget)){
-                    randomTarget = new Point((int)(VirtualWorld.WORLD_COLS*Math.random())-2,(int)(VirtualWorld.WORLD_ROWS*Math.random())-1);
-                }
-            }else {
-                world.moveEntity(this, this.nextPositionUFO(world, randomTarget));
-
             }
         }
 
-        scheduleActions(scheduler, world, imageStore);
+        Optional<Entity> alien =world.findNearest(this.getPosition(),Alien.class);
+        if(alien.isEmpty()) {
+            Quake quake = Factory.createQuake(this.getPosition(), imageStore.getImageList(Functions.QUAKE_KEY));
+            world.removeEntity(this);
+            scheduler.unscheduleAllEvents(this);
+            world.addEntity(quake);
+            quake.scheduleActions(scheduler, world, imageStore);
+        }else
+            scheduleActions(scheduler, world, imageStore);
+    }
+
+    private void newDest(){
+        dest = new Point((int)(Math.random()*VirtualWorld.WORLD_COLS), (int)(Math.random()*VirtualWorld.WORLD_ROWS));
     }
 
     private boolean moveToUFO(
@@ -71,30 +77,17 @@ public class UFO extends AnimatedEntity {
             world.removeEntity(target);
             scheduler.unscheduleAllEvents(target);
             hasSmith = true;
-            searching = true;
-            randomTarget = new Point((int)(VirtualWorld.WORLD_COLS*Math.random())-2,(int)(VirtualWorld.WORLD_ROWS*Math.random())-1);
+            newDest();
             return true;
         } else {
             Point nextPos = this.nextPositionUFO(world, target.getPosition());
 
             if (!this.getPosition().equals(nextPos)) {
-                Optional<Entity> occupant = world.getOccupant(nextPos);
-                if (occupant.isPresent()) {
-                    scheduler.unscheduleAllEvents(occupant.get());
-                }
 
                 world.moveEntity(this, nextPos);
             }
             return false;
         }
-        /*
-        else{
-            Point nextPos = this.nextPositionUFO(world,randomTarget);
-            if (!this.getPosition().equals(nextPos)) {
-                world.moveEntity(this,nextPos);
-            }
-        }*/
-        //return false;
     }
 
     protected Point nextPositionUFO( WorldModel world, Point destPos)
