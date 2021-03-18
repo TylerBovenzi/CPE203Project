@@ -18,7 +18,7 @@ public class Factory {
         if(minerAlien.isPresent()){
             Point loc = minerAlien.get().getPosition();
             world.removeEntityAt(loc);
-            Alien alien = Factory.createAlien("alien", loc, 5, 5, imageStore.getImageList("alien"));
+            Alien alien = Factory.createAlien("alien", loc, 1, 1, imageStore.getImageList("alien"));
             world.addEntity(alien);
             alien.scheduleActions(scheduler, world, imageStore);
         }

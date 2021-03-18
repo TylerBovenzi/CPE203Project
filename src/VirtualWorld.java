@@ -84,7 +84,7 @@ public final class VirtualWorld extends PApplet
             Point pressed = mouseToPoint(mouseX, mouseY);
             Factory.createInvasion(pressed, world, scheduler, imageStore);
             redraw();
-            //hasClicked= true; //uncomment this line to only allow one invasion
+            hasClicked= true; //uncomment this line to only allow one invasion
         }
     }
 
