@@ -1,0 +1,11 @@
+1. The event is triggered by a click anywhere in the virtual world
+2. When the event is triggered by a click, a UFO is spawned, scorching nearby ground and starting fires in various locations near the crash. 
+3. The miner nearest to the crash is transformed into an Alien. This Alien then searches for the nearest Miner (Not Full). When the Alien catches the miner, it turns that miner into an alien that also tries to catch other miners. 
+4. The UFO that is spawned moves around picking up Blacksmiths and relocating them to new locations in the virtual world. The new locations are determined randomly. Any square that the UFO passes becomes scorched. 
+After all Miners have been transformed to aliens, the aliens go back to the UFO. 
+After all Aliens enter the UFO, the UFO disappears.
+After all Ores are collected, Ore Blobs go into the fire. 
+5. Asa Grote: Writing up design; Alien Class and triggers; Ore Blobs going into the fire
+   Tyler Bovenzi: Collecting and adding images; Event spawning; UFO actions; Alien Collection and UFO disappearing
+NOTE:   The Alien invasion can only be triggered once
+        The project can be found in Asa Grote's original project repository.
